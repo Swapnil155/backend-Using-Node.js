@@ -28,6 +28,18 @@ module.exports = {
   },
   getUserByID: (id, callBack) => {
     pool.query(
+      `select * From user where id = ?`,
+      [id],
+      (error, results, fields) => {
+        if (error) {
+          callBack(error);
+        }
+        return callBack(null, results[0]);
+      }
+    );
+  },
+  getStdByID: (id, callBack) => {
+    pool.query(
       `select * From registration where id = ?`,
       [id],
       (error, results, fields) => {

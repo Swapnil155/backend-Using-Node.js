@@ -2,6 +2,7 @@ const {
   create,
   getByUserEmailId,
   getUserByID,
+  getStdByID,
   allStudentData,
   updateStudent,
 } = require("./user.service");
@@ -76,6 +77,40 @@ module.exports = {
     });
   },
   Student: (req, res) => {
+    const id = req.params.id;
+    getStdByID(id, (error, results) => {
+      if (error) {
+        res.body.json({
+          success: 0,
+          message: error,
+        });
+      }
+      if (!results) {
+        return res.json({
+          success: 0,
+          message: "Record not Found",
+        });
+      }
+      results.password = undefined;
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+  AllStudents: (req, res) => {
+    allStudentData((error, results) => {
+      if (error) {
+        console.log(error);
+        return
+      }
+      return res.json({
+        success: 1,
+        data: results,
+      });
+    });
+  },
+  user: (req, res) => {
     const id = req.params.id;
     getUserByID(id, (error, results) => {
       if (error) {
